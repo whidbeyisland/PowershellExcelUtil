@@ -6,8 +6,20 @@ $workbook = $excel.Workbooks.Add()
 $uregwksht = $workbook.Worksheets.Item(1)
 $uregwksht.Name = 'The name you choose'
 
+$sourcePath = 'C:\Users\davis\source\repos\PowershellExcelUtil - Files'
+
 #later: import all csv's in folder
+$csvFiles = Get-ChildItem $sourcePath -Filter *.csv
+$csvFilePaths = New-Object Collections.Generic.List[Object]
+for ($i = 0; $i -lt $csvFiles.Length; $i++) {
+	$records = Import-Csv -Path ($sourcePath + "\" + $csvFiles[$i])
+	$csvFilePaths.Add($records)
+}
+Write-Host $csvFilePaths.Length
+
+<#
 $records = Import-Csv -Path 'C:\Users\davis\source\repos\PowershellExcelUtil - Files\CSV1.csv'
+
 
 #writing headers
 for ($j = 0; $j -lt $records[0].psobject.properties.name.Length; $j++) {
@@ -26,3 +38,4 @@ $usedRange.EntireColumn.AutoFit() | Out-Null
 
 $workbook.SaveAs('C:\Users\davis\source\repos\PowershellExcelUtil - Files\myExcel.xlsx')
 $excel.Quit()
+#>
