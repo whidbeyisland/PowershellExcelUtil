@@ -30,7 +30,10 @@ for ($k = 0; $k -lt $csvFiles.Length; $k++) {
 	$usedRange.EntireColumn.AutoFit() | Out-Null
 }
 
-#to do: reverse order of sheets, delete last sheet
+#to do: reverse order of sheets
+
+#delete last sheet
+$workbook.Worksheets.Item($workbook.Worksheets.Count).Delete()
 
 $workbook.SaveAs('C:\Users\davis\source\repos\PowershellExcelUtil - Files\myExcel.xlsx')
 $excel.Quit()
