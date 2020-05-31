@@ -2,16 +2,18 @@ $excel = New-Object -ComObject excel.application
 $excel.visible = $True
 
 $workbook = $excel.Workbooks.Add()
-
 $sourcePath = 'C:\Users\davis\source\repos\PowershellExcelUtil - Files'
-
 $csvFiles = Get-ChildItem $sourcePath -Filter *.csv
+
+for ($k = 1; $k -lt $csvFiles.Length; $k++) {
+	$workbook.Worksheets.Add()
+}
 for ($k = 0; $k -lt $csvFiles.Length; $k++) {
 	#import CSV
 	$records = Import-Csv -Path ($sourcePath + "\" + $csvFiles[$k])
 	
 	#add a new worksheet
-	$uregwksht = $workbook.Worksheets.Add()
+	$uregwksht = $workbook.Worksheets.Item($k + 1)
 	$uregwksht.Name = $csvFiles[$k]
 	
 	#writing headers
@@ -29,11 +31,6 @@ for ($k = 0; $k -lt $csvFiles.Length; $k++) {
 	$usedRange = $uregwksht.UsedRange
 	$usedRange.EntireColumn.AutoFit() | Out-Null
 }
-
-#to do: reverse order of sheets
-
-#delete last sheet
-$workbook.Worksheets.Item($workbook.Worksheets.Count).Delete()
 
 $workbook.SaveAs('C:\Users\davis\source\repos\PowershellExcelUtil - Files\myExcel.xlsx')
 $excel.Quit()
