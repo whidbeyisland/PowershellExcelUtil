@@ -3,18 +3,17 @@ $excel.visible = $True
 
 $workbook = $excel.Workbooks.Add()
 
-$uregwksht= $workbook.Worksheets.Item(1)
+$uregwksht = $workbook.Worksheets.Item(1)
 $uregwksht.Name = 'The name you choose'
 
 #later: import all csv's in folder
 $records = Import-Csv -Path 'C:\Users\davis\source\repos\PowershellExcelUtil - Files\CSV1.csv'
 
-<#
-Write-Host $records[0].psobject.properties.value[0]
-$uregwksht.Cells.Item(5,1) = $records[1].psobject.properties.value[1]
-#>
-
-#later: write headers
+#writing headers
+for ($j = 0; $j -lt $records[0].psobject.properties.name.Length; $j++) {
+	$uregwksht.Cells.Item(1, $j + 1) = $records[0].psobject.properties.name[$j]
+}
+#filling up table
 for ($i = 0; $i -lt $records.Length; $i++) {
 	for ($j = 0; $j -lt $records[1].psobject.properties.value.Length; $j++) {
 		$uregwksht.Cells.Item($i + 2, $j + 1) = $records[$i].psobject.properties.value[$j]
