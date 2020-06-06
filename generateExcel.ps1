@@ -1,5 +1,5 @@
 $excel = New-Object -ComObject excel.application
-$excel.visible = $True
+$excel.visible = $False
 
 $workbook = $excel.Workbooks.Add()
 $sourcePath = 'C:\Users\davis\source\repos\PowershellExcelUtil - Files'
@@ -32,5 +32,11 @@ for ($k = 0; $k -lt $csvFiles.Length; $k++) {
 	$usedRange.EntireColumn.AutoFit() | Out-Null
 }
 
-$workbook.SaveAs('C:\Users\davis\source\repos\PowershellExcelUtil - Files\myExcel.xlsx')
+$FilePath = 'C:\Users\davis\source\repos\PowershellExcelUtil - Files\myExcel.xlsx'
+
+$workbook.SaveAs($FilePath)
 $excel.Quit()
+
+Start-Process -FilePath $FilePath
+Start-Sleep -seconds 10
+Stop-Process -Name Excel
